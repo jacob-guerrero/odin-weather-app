@@ -52,3 +52,12 @@ form.onsubmit = (e) => {
   }
   input.blur();
 };
+window.onload = async () => {
+  const promises = await getWeather("auto:ip");
+  img.classList.add("weather-icon-filtered");
+  if (promises.current.is_day === 0) {
+    img.src = "./img/clear_night.svg";
+  } else {
+    img.src = "./img/sunny.svg";
+  }
+};
