@@ -8,13 +8,30 @@ async function getWeather(city) {
 }
 
 const handleErrors = (error) => {
-  console.log("error");
+  console.log(error);
 };
 
-const showData = (promises) => {
-  console.log(promises.location.name, promises.current.temp_c, promises);
-  const img = document.querySelector("img");
-  img.src = promises.current.condition.icon;
+async function showData () {
+  const promises = await getWeather(input.value);
+  promises.error
+    ? handleErrors(promises.error.message)
+    : console.log(promises.location.name, promises.current.temp_c, promises);
+  //const img = document.querySelector("img");
+  //img.src = promises.current.condition.icon;
 };
 
-getWeather("brasilia").then(showData).catch(handleErrors);
+const input = document.querySelector(".input");
+const searchBtn = document.querySelector(".search-btn");
+const form = document.querySelector(".form-container");
+
+searchBtn.addEventListener("click", () => {
+  console.log(input.value);
+  showData().catch(handleErrors);
+});
+form.onsubmit = (e) => {
+  e.preventDefault();
+  if (input.value !== "") {
+    showData().catch(handleErrors);
+  }
+  input.blur();
+};
