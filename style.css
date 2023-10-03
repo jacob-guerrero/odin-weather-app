@@ -87,3 +87,20 @@ body {
 .icon-info {
     margin: 0;
 }
+
+@media only screen and (max-width: 360px) {
+    /* .box {
+        width: 80%;
+        display: flex;
+        justify-content: center;
+    }
+    .box i {
+    } */
+    .box:hover input, .box input:focus{
+        width: 80vw;
+    }
+
+    .weather-info {
+        text-align: center;
+    }
+}
