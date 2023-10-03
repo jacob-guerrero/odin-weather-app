@@ -7,6 +7,14 @@ async function getWeather(city) {
   return promises;
 }
 
-getWeather("london").then((promises) =>
-  console.log(promises.location.name, promises.current.temp_c)
-);
+const handleErrors = (error) => {
+  console.log("error");
+};
+
+const showData = (promises) => {
+  console.log(promises.location.name, promises.current.temp_c, promises);
+  const img = document.querySelector("img");
+  img.src = promises.current.condition.icon;
+};
+
+getWeather("brasilia").then(showData).catch(handleErrors);
