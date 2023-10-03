@@ -1,3 +1,10 @@
+const input = document.querySelector(".input");
+const searchBtn = document.querySelector(".search-btn");
+const form = document.querySelector(".form-container");
+const info = document.querySelector(".weather-info");
+const img = document.querySelector(".weather-icon");
+const iconInfo = document.querySelector(".icon-info");
+
 async function getWeather(city) {
   const response = await fetch(
     `http://api.weatherapi.com/v1/current.json?key=db92f4bc49d04e76b7e32218232709&q=${city}`,
@@ -7,26 +14,36 @@ async function getWeather(city) {
   return promises;
 }
 
+async function showData() {
+  const promises = await getWeather(input.value);
+  img.classList.remove("weather-icon-filtered");
+
+  if (promises.error) {
+    handleErrors(promises.error.message);
+  } else {
+    console.log(promises.location.name, promises.current.temp_c, promises);
+    const location = promises.location.name;
+    const temp_c = promises.current.temp_c;
+    const temp_f = promises.current.temp_f;
+    const condition = promises.current.condition.text;
+    const icon = promises.current.condition.icon;
+
+    info.innerText = `The current weather in ${location} is ${temp_c}°C (${temp_f}°F)`;
+    img.src = icon;
+    iconInfo.innerText = `${condition}`;
+  }
+}
+
 const handleErrors = (error) => {
   console.log(error);
 };
 
-async function showData () {
-  const promises = await getWeather(input.value);
-  promises.error
-    ? handleErrors(promises.error.message)
-    : console.log(promises.location.name, promises.current.temp_c, promises);
-  //const img = document.querySelector("img");
-  //img.src = promises.current.condition.icon;
-};
-
-const input = document.querySelector(".input");
-const searchBtn = document.querySelector(".search-btn");
-const form = document.querySelector(".form-container");
-
+/* Event Listeners */
 searchBtn.addEventListener("click", () => {
-  console.log(input.value);
-  showData().catch(handleErrors);
+  if (input.value !== "") {
+    console.log(input.value);
+    showData().catch(handleErrors);
+  }
 });
 form.onsubmit = (e) => {
   e.preventDefault();
